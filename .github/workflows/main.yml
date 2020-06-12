@@ -34,5 +34,5 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: fasten-distribution
-        path: ./build/artifacts/com.mbeddr.formal.safetyDistribution/fasten-1.0-SNAPSHOT.zip
+        path: build/artifacts/com.mbeddr.formal.safetyDistribution/fasten-1.0-SNAPSHOT.zip
 
