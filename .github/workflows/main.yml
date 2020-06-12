@@ -3,15 +3,7 @@ name: FASTEN_CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
-on:
-  push:
-    branches:
-      - master
-      - add_ci
-  pull_request:
-    branches:
-      - master
-      - add_ci
+on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
