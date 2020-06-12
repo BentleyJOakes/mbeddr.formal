@@ -17,6 +17,6 @@ fi
 echo "Copy plugins to $TARGET_FOLDER"
 
 cd $SOURCE_FOLDER
-cp -v * -r -t "$(eval echo "$TARGET_FOLDER")"
+cp * -r -t "$(eval echo "$TARGET_FOLDER")"
 
 
