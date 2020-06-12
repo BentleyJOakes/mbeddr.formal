@@ -19,7 +19,7 @@ jobs:
     
     - name: Merge fix
       run: |
-        git checkout origin/remove_jbr_dir
+        git checkout --track remotes/origin/remove_jbr_dir
         git checkout add_ci
         git merge --no-edit remove_jbr_dir
 
