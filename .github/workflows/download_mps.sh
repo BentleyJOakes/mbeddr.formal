@@ -23,4 +23,4 @@ if [ ! -f "jbr.tar.gz" ]; then
     curl -L ${JBR} > "jbr.tar.gz"
 fi
 
-tar -C $HOME'/MPS 2019.3/' -zxvf "jbr.tar.gz"
+tar -C '/home/runner/MPS 2019.3/' -zxvf "jbr.tar.gz"
