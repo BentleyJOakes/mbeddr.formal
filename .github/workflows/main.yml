@@ -5,6 +5,12 @@ name: FASTEN_CI
 # events but only for the master branch
 on: [push, pull_request]
 
+env:
+  MPS_ZIP: "https://download.jetbrains.com/mps/2019.3/MPS-2019.3.4.zip"
+  JBR: "https://bintray.com/jetbrains/intellij-jbr/download_file?file_path=jbr-11_0_7-windows-x64-b765.57.tar.gz"
+  PLUGIN_SOURCE_FOLDER: 'mbeddr.formal.mps-plugins/platform_2019_3_4/'
+  PLUGIN_TARGET_FOLDER: '/home/runner/MPS 2019.3/plugins/'
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -19,16 +25,47 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Download MPS
-      run: ./.github/workflows/download_mps.sh
+      run: |
+        echo "Downloading MPS"
+        echo ${MPS_ZIP}
+        curl -L ${MPS_ZIP} > "MPS.zip"
+        
+        echo "Unzipping MPS"
+        unzip -o "MPS.zip" -d ~
+        
+        echo "Downloading JBR - JetBrainsRuntime"
+        curl -L ${JBR} > "jbr.tar.gz"
+        
+        #TODO: Fix JBR location
+        tar -C '/home/runner/MPS 2019.3/' -zxvf "jbr.tar.gz"
 
     - name: Download and move plugins
-      run: ./.github/workflows/download_plugins.sh
-      
+      run: |
+        git clone https://github.com/danielratiu/mbeddr.formal.mps-plugins.git
+        echo "Copy plugins from $PLUGIN_SOURCE_FOLDER to $PLUGIN_TARGET_FOLDER"
+        cd $PLUGIN_SOURCE_FOLDER
+        cp * -r -t "$(eval echo "$PLUGIN_TARGET_FOLDER")"
+        
     - name: Change FASTEN config
-      run: ./.github/workflows/change_config.sh
+      run: |
+        echo "Changing config"
+        cd ../..
+        echo "mpsHomeDir='/home/runner/MPS 2019.3'" > gradle.properties
+        echo "mps.home='/home/runner/MPS 2019.3'" > gradle.properties
+        echo "mbeddr.formal.home='/home/runner/mbeddr.formal'" >> gradle.properties
       
     - name: Build FASTEN
-      run: ./.github/workflows/run_gradle.sh
+      run: |
+        echo "Starting gradle build..."
+        export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+        export JB_JAVA11_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+        export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+        sudo apt install openjdk-11-jdk
+        sudo apt install gradle
+        chmod +x ./gradlew
+
+        ./gradlew
       
     - name: Archive distribution
       uses: actions/upload-artifact@v1
