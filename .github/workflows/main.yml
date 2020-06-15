@@ -39,12 +39,12 @@ jobs:
         #TODO: Fix JBR location
         tar -C '/home/runner/MPS 2019.3/' -zxvf "jbr.tar.gz"
 
-    - name: Download and move plugins
-      run: |
-        git clone https://github.com/danielratiu/mbeddr.formal.mps-plugins.git
-        echo "Copy plugins from $PLUGIN_SOURCE_FOLDER to $PLUGIN_TARGET_FOLDER"
-        cd $PLUGIN_SOURCE_FOLDER
-        cp * -r -t "$(eval echo "$PLUGIN_TARGET_FOLDER")"
+    #- name: Download and move plugins
+    #  run: |
+    #    git clone https://github.com/danielratiu/mbeddr.formal.mps-plugins.git
+    #    echo "Copy plugins from $PLUGIN_SOURCE_FOLDER to $PLUGIN_TARGET_FOLDER"
+    #    cd $PLUGIN_SOURCE_FOLDER
+    #    cp * -r -t "$(eval echo "$PLUGIN_TARGET_FOLDER")"
         
     - name: Change FASTEN config
       run: |
